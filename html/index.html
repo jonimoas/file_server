@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>File Admin Panel</title>
+<style>
+:root {
+    --primary: #132f32;
+    --primary-hover: #155453;
+    --primary-active: #258f80;
+    --background: #121212;
+    --section-bg: #1c1c1c;
+    --text-color: #eaeaea;
+}
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: sans-serif;
+    background-color: var(--background);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+h1 { font-size: 2rem; margin-bottom: 20px; }
+.section { width: 100%; max-width: 700px; background-color: var(--section-bg); border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 15px rgba(37,143,128,0.5); }
+h2 { color: var(--primary-active); margin-top: 0; }
+.button { display: inline-flex; align-items: center; gap: 8px; background-color: var(--primary); color: var(--text-color); border: none; border-radius: 6px; padding: 10px 18px; font-size: 15px; text-decoration: none; cursor: pointer; transition: background-color 0.2s ease, transform 0.1s; margin: 5px; }
+.button:hover { background-color: var(--primary-hover); }
+.button:active { background-color: var(--primary-active); transform: scale(0.97); }
+table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+table th, table td { padding: 10px; border: 1px solid var(--primary); text-align: left; }
+table th { background-color: var(--primary); color: var(--text-color); }
+input[type="file"] { padding: 5px; }
+form { margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>File Admin Panel</h1>
+
+<div class="section">
+<h2>Upload File</h2>
+<form method="post" action="/upload" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <button class="button" type="submit">Upload</button>
+</form>
+</div>
+
+<div class="section">
+<h2>Files</h2>
+<table>
+<tr><th>URL</th><th>Filename</th><th>Uploaded At</th><th>Actions</th></tr>
+{% for f in files %}
+<tr>
+    <td>{{f[0]}}</td>
+    <td>{{f[1]}}</td>
+    <td>{{f[2]}}</td>
+    <td>
+        <form method="post" action="/delete" style="display:inline">
+            <input type="hidden" name="uuid" value="{{f[0]}}">
+            <button class="button" type="submit">Delete</button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</body>
+</html>
